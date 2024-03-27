@@ -1,6 +1,9 @@
 package servicio;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
@@ -29,7 +32,27 @@ public class ServicioPeliculasArchivo implements IServicioPeliculas{
 
     @Override
     public void listarPeliculas() {
-        // volvemos a abrir el 
+        // volvemos a abrir el archivo
+        var archivo = new File(NOMBRE_ARCHIVO);
+        try {
+            System.out.println("Listado de Peliculas");
+            // Abrimos el archivo para lectura
+            var entrada = new BufferedReader(new FileReader(archivo));
+            // Leemos linea a linea el archivo
+            String linea;
+            linea = entrada.readLine();
+            // Leemos todas las lineas
+            while(linea!= null){
+                var pelicula = new Pelicula(linea);
+                System.out.println(pelicula);
+                // Antes de terminar el ciclo volvemos a leer la siguiente linea
+                linea = entrada.readLine();
+            }
+            // Cerrar el archivo
+            entrada.close();
+        } catch (Exception e) {
+            System.out.println("Ocurrio un error a leer el archivo: " + e.getMessage());
+        }
     }
 
     @Override
